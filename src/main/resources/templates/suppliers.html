@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Suppliers</title>
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .supplier-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Supplier List</h2>
+        <a data-url="/suppliers/add" class="btn btn-success">Add New Supplier</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="supplier : ${suppliers}">
+                <td th:text="${supplier.name}"></td>
+                <td th:text="${supplier.contact}"></td>
+                <td th:text="${supplier.email}"></td>
+                <td th:text="${supplier.address}"></td>
+                <td>
+                    <a th:href="@{'/suppliers/edit/' + ${supplier.id}}" class="btn btn-sm btn-primary">Edit</a>
+                    <a th:href="@{'/suppliers/delete/' + ${supplier.id}}" class="btn btn-sm btn-danger ms-2"
+                       onclick="return confirm('Are you sure you want to delete this supplier?')">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.container a[data-url]').click(function (e) {
+            e.preventDefault();
+            let url = $(this).attr('data-url');
+            $('#main-content').load(url);
+        });
+    });
+</script>
+</body>
+</html>

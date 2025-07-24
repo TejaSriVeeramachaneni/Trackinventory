@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT6wVjKZxIYvJkURyQjjFvF0"
+            crossorigin="anonymous"
+    >
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+            rel="stylesheet"
+    >
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 150vh;
+            display: flex;
+            margin: 0;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 0; /* REMOVE EXTRA PADDING */
+        }
+        .sidebar h3 {
+            padding: 20px;
+            margin-bottom: 0;
+            background-color: #1a252f;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            border-bottom: 1px solid #34495e;
+            font-size: 16px;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .sidebar a:hover {
+            background-color: #34495e;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .highlight-invee {
+            font-family: 'Pacifico', cursive;  /* Stylish font for 'InVee' */
+            color: #f81a4d;  /* Bright yellow-orange */
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);  /* Light shadow for depth */
+        }
+
+        .welcome-text {
+            font-family: 'Roboto', sans-serif;  /* Clean, modern font for the rest of the text */
+            color: rgba(50, 51, 57, 0.75);  /* Dark grey color */
+        }
+        #main-content {
+            background: rgba(244, 234, 224, 0.59);  /* Semi-transparent white background */
+            border-radius: 2px;  /* Rounded corners */
+            backdrop-filter: blur(10px);  /* Frosted glass effect */
+            padding: 20px;  /* Reduced padding for a more compact look */
+            border: 10px solid rgb(213, 207, 207);  /* Subtle border to enhance the glass effect */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h3>Admin Panel</h3>
+    <a data-url="/products"><i class="bi bi-box-seam"></i> Product Stats</a>
+    <a data-url="/orders"><i class="bi bi-cart-check"></i> Order Stats</a>
+    <a data-url="/orders/pending"><i class="bi bi-hourglass-split"></i> Pending Orders</a>
+    <a data-url="/products/add"><i class="bi bi-plus-circle"></i> Add Product</a>
+    <a data-url="/register"><i class="bi bi-person-plus"></i> Register Staff</a>
+    <a data-url="/suppliers"><i class="bi bi-truck"></i> Suppliers</a>
+    <a data-url="/categories"><i class="bi bi-tags"></i> Categories</a>
+    <a data-url="/stats"><i class="bi bi-bar-chart-line"></i> View Reports</a>
+    <a th:href="@{/logout}"><i class="bi bi-box-arrow-right"></i> Logout</a>
+</div>
+
+<div id = "main-content" class = "main-content">
+    <h2 class="welcome-text" style="font-size: 3rem;">
+        Welcome to <span class="highlight-invee">InVee</span>
+    </h2>
+    <p class="text-muted mt-2">Smart Inventory Management for Small Businesses</p>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.sidebar a[data-url]').click(function (e) {
+            e.preventDefault();
+            let url = $(this).attr('data-url');
+            $('#main-content').load(url);
+        });
+    });
+</script>
+
+</body>
+</html>

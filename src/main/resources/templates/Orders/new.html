@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create New Order</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+    >
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Create New Order</h3>
+        </div>
+        <div class="card-body">
+
+            <form id = "orderForm" th:action="@{/orders/new}" th:object="${order}" method="post">
+                <div class="mb-3">
+                    <label class="form-label">Order Type</label>
+                    <select class="form-select" th:field="*{type}" required>
+                        <option value="">-- Select Type --</option>
+                        <option value="PURCHASE">Purchase</option>
+                        <option value="SALES">Sales</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Product</label>
+                        <select class="form-select" th:field="*{items[0].product}" required>
+                            <option value="">-- Select Product --</option>
+                            <th:block th:each="product : ${products}">
+                                <option th:value="${product.id}" th:text="${product.name}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Supplier</label>
+                        <select class="form-select" th:field="*{items[0].supplier}" required>
+                            <option value="">-- Select Supplier --</option>
+                            <th:block th:each="supplier : ${suppliers}">
+                                <option th:value="${supplier.id}" th:text="${supplier.name}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-control" th:field="*{items[0].quantity}" min="1" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Price</label>
+                        <input type="number" class="form-control" th:field="*{items[0].price}" step="0.01" min="0" required />
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success">Submit Order</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#orderForm').submit(function (e) {
+            e.preventDefault(); // Stop default form submit
+
+            let form = $(this);
+            let url = form.attr('action');
+            let formData = form.serialize();
+
+            $.post(url, formData, function (response) {
+                // After successful submission, reload the order list or form
+                $('#main-content').html(response);
+            }).fail(function () {
+                alert('Error submitting order.');
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

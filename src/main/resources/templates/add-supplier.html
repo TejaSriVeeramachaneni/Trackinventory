@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Supplier</title>
+    <!-- Link to Bootstrap CSS for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center">Add Supplier</h2>
+    <form id="addSupplierForm" th:action="@{/suppliers/save}" th:object="${supplier}" method="post" class="mt-4">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name:</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name" required/>
+        </div>
+        <div class="mb-3">
+            <label for="contact" class="form-label">Contact Number:</label>
+            <input type="text" th:field="*{contact}" class="form-control" id="contact" required/>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email:</label>
+            <input type="email" th:field="*{email}" class="form-control" id="email" required/>
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">Address:</label>
+            <textarea th:field="*{address}" class="form-control" id="address" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <a data-url="/suppliers" id="back-to-list" class="btn btn-link mt-3">Back to list</a>
+</div>
+<script>
+    $(document).ready(function () {
+
+        // Handle form submission via AJAX
+        $('#addSupplierForm').submit(function (e) {
+            e.preventDefault(); // Prevent normal form submission
+
+            let form = $(this);
+            let url = form.attr('action');
+            let formData = form.serialize(); // Serialize form fields
+
+            $.post(url, formData, function () {
+                // After successful post, load the category list
+                $('#main-content').load('/suppliers');
+            }).fail(function() {
+                alert("Error saving Supplier. Please try again.");
+            });
+        });
+
+        // Handle Back link click with AJAX
+        $('.container a[data-url]').click(function (e) {
+            e.preventDefault();
+            let url = $(this).attr('data-url');
+            $('#main-content').load(url);
+        });
+    });
+</script>
+<!-- Link to Bootstrap JS (Optional, for modal/dialog or extra features) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
